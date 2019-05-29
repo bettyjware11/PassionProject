@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var UserProfileCollection = require('../models/UserProfileSchema');
+// exports.users = require('./users');
+var UserProfileCollection = require('../models/UserProfile');
 
 // Used to hash passwords
 var bCrypt = require('bcrypt-nodejs');
@@ -104,13 +105,13 @@ router.post('/',
     ),
     // If the signup strategy is successful, send "User Created!!!"
     function(req, res) {
-      // Send the message in the .send function
-      res.send('User Created!!!');
+        // Send the message in the .send function
+        res.send('User Created!!!');
     });
 
 // If a new user signup strategy failed, it's redirected to this route
 router.get('/failNewUser', (req, res)=>{
-  res.send('NOPE!!! On the new user');
+    res.send('NOPE!!! On the new user');
 });
 
 //******************************************************************
