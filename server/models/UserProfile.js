@@ -14,4 +14,4 @@ var UserProfile = new Schema(
 );
 
 //Export model
-module.exports = mongoose.model('user', UserProfile);
+module.exports = mongoose.model('profileUser', UserProfile);

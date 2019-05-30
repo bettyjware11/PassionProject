@@ -97,6 +97,16 @@ passport.use('signup', new LocalStrategy(
 );
 
 // Create new user with the signup strategy
+router.get('/addUser', function(req, res, next) {
+    // We're calling our schema variable so we can use .create function. You can use req.body if all of the information in your body of your fetch in React as the EXACT same names as your schema in your database. Otherwise you should use a collection here.
+    UserProfileCollection.create(req.body, (errors, results)=>{
+        // If there was some sort of error in finding something, run this error
+        if(errors) res.send(errors);
+        // If everything went alright, send the new collection through the results variable
+        else res.send("Added!!!!");
+    });
+});
+
 router.post('/',
     // Passport's authenticate function is called the signup strategy. Once it's complete it's either successful or failed
     passport.authenticate('signup',
