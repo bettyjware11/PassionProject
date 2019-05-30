@@ -114,6 +114,31 @@ router.get('/failNewUser', (req, res)=>{
     res.send('NOPE!!! On the new user');
 });
 
+/* GET users listing. */
+router.get('/', (req, res, next) => {
+    console.log(req.session);
+    console.log(req.session.username);
+
+    if (req.session.username) {
+        res.send(req.session.username);
+    } else {
+        res.send(null);
+    }
+});
+
+router.get('/logout', (req, res, next) => {
+    console.log(req.session);
+    // console.log(req.session.username);
+
+    if (req.session) {
+        req.session=null;
+        res.send("Logged Out");
+    } else {
+        res.send("Not logged in");
+    }
+});
+
+
 //******************************************************************
 // ***************   Check if a user exists    *********************
 //******************************************************************
