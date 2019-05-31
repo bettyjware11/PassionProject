@@ -73,6 +73,7 @@ passport.use('signup', new LocalStrategy(
             newUser.username = req.body.username;
             newUser.password = createHash(req.body.password);
             newUser.email = req.body.email;
+            // newUser.profileImage = req.body.profileImage;
 
             // save the user. Works like .create, but for an object of a schema
             newUser.save(function(err) {
