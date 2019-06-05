@@ -1,0 +1,18 @@
+extends layout
+
+block content
+    h1  Find User
+    form(method="POST")
+        p
+            label(for='id') Enter the ID for the user:
+            input(type='text', id='id', name='id')
+        button Submit
+
+    if findResults
+        h1 Here are the results
+        img(src=findResults.profileImage)
+        h1 #{findResults.username} (ID: #{findResults.id})
+        h2 Exotic Styles
+        p styleName: #{findResults.exoticStyles.styleName}, styleImage: #{findResults.exoticStyles.styleImage}, uniqueColorMix: #{findResults.exoticSyles.uniqueColorMix}, styleColor: #{findResults.exoticStyles.styleColor}, comments: #{findResults.exoticStyles.comments}
+    else
+        h1 No Results

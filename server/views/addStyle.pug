@@ -1,0 +1,34 @@
+extends layout
+
+block content
+    h1  Add Exotic Style
+    form(method="POST")
+        p
+            label(for='id') Enter the ID for the user:
+            input(type='text', id='id', name='id')
+        p
+            label(for='username') Enter username:
+            input(type='text', id='username', name='username')
+        p
+            label(for='profileImage') Enter profile image URL:
+            input(type='text', id='profileImage', name='profileImage')
+        p
+            label(for='styleName') Enter name of the style:
+            input(type='text', id='styleName', name='exoticStyles.styleName')
+        p
+            label(for='styleImage') Enter the image URL:
+            input(type='text', id='styleImage', name='exoticStyles.styleImage')
+        p
+            label(for='uniqueColorMix') Is this a unique color mix?
+            input(type='text', id='uniqueColorMix', name='exoticStyles.uniqueColorMix')
+        p
+            label(for='styleColor') Enter the style Color:
+            input(type='text', id='styleColor', name='exoticStyles.styleColor')
+
+        p
+            label(for='comments') Enter any comments:
+            input(type='text', id='comments', name='exoticStyles.comments')
+
+        button Submit
+    if isSent
+        h1 Item Created

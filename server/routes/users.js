@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 // exports.users = require('./users');
-var UserProfileCollection = require('../models/UserProfile');
+var ExoticStyleUserCollection = require('../models/ExoticStyleUserSchema');
 
 // Used to hash passwords
 var bCrypt = require('bcrypt-nodejs');
@@ -43,12 +43,12 @@ passport.use('signup', new LocalStrategy(
     // req is the request of the route that called the strategy
     // username and password are passed by passport by default
     // done is the function to end the strategy (callback function).
-    function(req, username, password, done) {
+    function(req, id, username, password, profileImage, done) {
       console.log("0");
       // Created like this so it can be delayed to be run in the next "tick" loop. See function call below.
       findOrCreateUser = function(){
         // find a user in Mongo with provided username. It returns an error if there is an error or the full entry for that user
-        UserProfileCollection.findOne({'username':username},function(err, user) {
+        ExoticStyleUserCollection.findOne({'id':id},function(err, user) {
           // In case of any error in Mongoose/Mongo when finding the user
           if (err){
             console.log('Error in SignUp: '+err);
@@ -68,12 +68,13 @@ passport.use('signup', new LocalStrategy(
             console.log(req.body);
             // if there is no user with that email
             // create the user
-            var newUser = new UserProfileCollection();
+            var newUser = new ExoticStyleUserCollection();
             // set the user's local credentials
+            newUser.id = req.body.id;
             newUser.username = req.body.username;
             newUser.password = createHash(req.body.password);
-            newUser.email = req.body.email;
-            // newUser.profileImage = req.body.profileImage;
+            newUser.profileImage = req.body.profileImage;
+
 
             // save the user. Works like .create, but for an object of a schema
             newUser.save(function(err) {
@@ -100,7 +101,7 @@ passport.use('signup', new LocalStrategy(
 // Create new user with the signup strategy
 router.get('/addUser', function(req, res, next) {
     // We're calling our schema variable so we can use .create function. You can use req.body if all of the information in your body of your fetch in React as the EXACT same names as your schema in your database. Otherwise you should use a collection here.
-    UserProfileCollection.create(req.body, (errors, results)=>{
+    ExoticStyleUserCollection.create(req.body, (errors, results)=>{
         // If there was some sort of error in finding something, run this error
         if(errors) res.send(errors);
         // If everything went alright, send the new collection through the results variable
@@ -162,7 +163,7 @@ passport.use(new LocalStrategy(
     function(username, password, done) {
       console.log("Local Strat");
       // find a user in Mongo with provided username. It returns an error if there is an error or the full entry for that user
-      UserProfileCollection.findOne({ username: username }, function (err, user) {
+      ExoticStyleUserCollection.findOne({ id: id }, function (err, user) {
         // If there is a MongoDB/Mongoose error, send the error
         if (err) {console.log("1");
           return done(err); }
@@ -180,7 +181,7 @@ passport.use(new LocalStrategy(
         console.log(user);
         // null is here because there is not an error
         // user is the results of the findOne function
-        return done(null, user, { user: user.username });
+        return done(null, user, { user: user.id });
       });
     }
 ));
@@ -200,8 +201,8 @@ router.post('/login',
       req.session.username=req.user.username;
       // Send the username and email back to the client to save to the client's state
       res.send({
-        username: req.user.username,
-        email: req.user.email
+        id: req.user.id,
+        username: req.user.username
       });
     });
 
@@ -217,6 +218,88 @@ router.get('/logout', (req, res, next) => {
 
   // Clearing the session (cookie) to get rid of the saved username
   req.session = null;
+});
+
+//CRUD
+//add exotic style
+router.post('/addStyle', (req, res) => {
+    ExoticStyleUserCollection.findOneAndUpdate({id: req.body.id},
+        {$push: {exoticStyles: req.body}}, (errors) => {
+            if (errors) res.send(errors);
+            else res.send("Exotic Style Added");
+        });
+});
+
+//edit style
+router.post('/editStyle/:id/:styleId', (req, res) => {
+    ExoticStyleUserCollection.updateOne({_id: req.params.id, "exoticStyless._id": req.params.exoticStyleId},
+        {
+            $set: {
+                "exoticStyles.$.styleName": req.body.styleName,
+                "exoticStyles.$.styleImage": req.body.styleImage,
+                "exoticStyles.$.uniqueColorMix": req.body.uniqueColorMix,
+                "exoticStyles.$.styleColor": req.body.styleColor,
+                "exoticStyles.$.comments": req.body.comments,
+
+            }
+        }, (errors) => {
+            if (errors) res.send(errors);
+            else {
+                res.send('Exotic Style updated')
+            }
+        });
+});
+
+//results = user object array. Map array for each user THEN map each user for styles
+router.get('/grabExoticStyles', (req, res) => {
+    ExoticStyleUserCollection.find({}, (errors, results) => {
+        if (errors) res.send(errors);
+        else {
+            res.send(results)
+        }
+    })
+});
+
+//search styles
+router.post('/searchExoticStyles', (req, res) => {
+    ExoticStyleUserCollection.find(
+        {"exoticStyles.styleName": {"$regex": req.body.searchBar, "$options": "i"}}, (errors, results) => {
+            if (errors) res.send(errors);
+            else {
+                let resultsArray = [];
+                let sendArray = [];
+                for (let i = 0; i < results.length; i++) {
+                    for (let j = 0; j < results[i].exoticStyles.length; j++) {
+
+                        resultsArray.push(
+                            {
+                                styleName:results[i].exoticStyles[j].styleName,
+                                styleImage:results[i].exoticStyles[j].styleImage,
+                                uniqueColorMix:results[i].exoticStyles[j].uniqueColorMix,
+                                styleColor:results[i].exoticStyles[j].styleColor,
+                                comments:results[i].exoticStyles[j].comments,
+                            }
+                        )
+                    }
+                }
+                for(let i=0; i<resultsArray.length; i++){
+                    if(resultsArray[i].styleName.includes(req.body.searchBar)){
+                        sendArray.push(resultsArray[i])
+                    }
+                }
+                res.send(sendArray);
+            }
+        })
+});
+
+//grab user
+router.post('/searchUsers', (req, res) => {
+    ExoticStyleUserCollection.findOne({username: req.body.username}, (errors, results) => {
+        if (errors) res.send(errors);
+        else {
+            res.send(results);
+        }
+    })
 });
 
 

@@ -1,0 +1,33 @@
+extends layout
+
+block content
+    h1  Edit User
+    form(method="POST" action='/editChange')
+        p
+            label(for='id') Enter the ID for the user:
+            input(type='text', id='id', name='id', value=findResults.id)
+        p
+            label(for='username') Enter username:
+            input(type='text', id='username', name='username', value=findResults.username)
+        p
+            label(for='profileImage') Enter profile image URL:
+            input(type='text', id='profileImage', name='profileImage', value=findResults.profileImage)
+        p
+            label(for='styleName') Enter style name:
+            input(type='text', id='styleName', name='exoticStyles.styleName', value=findResults.exoticStyles.styleName)
+        p
+            label(for='styleImage') Enter style Image URL:
+            input(type='text', id='styleImage', name='exoticStyles.styleImage', value=findResults.exoticStyles.styleImage)
+        p
+            label(for='uniqueColorMix') Unique Color Mix?:
+            input(type='text', id='uniqueColorMix', name='exoticStyles.uniqueColorMix', value=findResults.exoticStyles.uniqueColorMix)
+        p
+            label(for='styleColor') Enter style Color:
+            input(type='text', id='styleColor', name='exoticStyles.styleColor', value=findResults.exoticStyles.styleColor)
+        p
+            label(for='comments') Enter comments:
+            input(type='text', id='comments', name='exoticStyles.comments', value=findResults.exoticStyles.comments)
+
+        button Submit
+    if isSent
+        h1 Item Created

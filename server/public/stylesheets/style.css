@@ -4,5 +4,16 @@ body {
 }
 
 a {
+  margin: 12px;
   color: #00B7FF;
+  font-size: 2em;
+}
+
+img{
+  height: 100px;
+}
+
+.gridSection{
+  margin-bottom: 12px;
+  border-bottom: 2px solid darkslategrey;
 }
