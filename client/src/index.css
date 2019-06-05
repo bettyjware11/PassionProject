@@ -1,0 +1,31 @@
+
+* {
+  /*color: deeppink;*/
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+
+body {
+
+  margin: 0;
+  padding: 50px;
+
+}
+
+.mr-20 {
+  margin-right: 20px;
+}
+
+.FormField__Checkbox {
+  position: relative;
+  top: 1.5px;
+}
+
+.FormField__TermsLink {
+  color: white;
+  border-bottom: 1px solid blue;
+  text-decoration: none;
+  display: inline-block;
+  padding-bottom: 2px;
+  margin-left: 5px;
+}
