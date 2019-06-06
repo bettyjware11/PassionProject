@@ -5,24 +5,17 @@ var Schema = mongoose.Schema;
 
 var ExoticStyleUserSchema = new Schema(
     {
-        id: Number,
+
         username: String,
         password: String,
-        profileImage: String,
-        exoticStyles: {
-            styleName: String,
-            styleImage: String,
+        // profileImage: String,
+        exoticStyleName:String,
+        exoticStyleDetails: {
+            styleImage: {data: Buffer, contentType:String},
             uniqueColorMix: String,
             styleColor: String,
             comments: String
         },
-        // styleName: {type: String, required: true, max: 100},
-        // styleImage: {type: String},
-        // uploadDate: {type: Date, default: Date.now},
-        // styleColor: {type: String},
-        // uniqueColorMix: {type: Boolean},
-        // uniqueColorChoice: {type: String},
-        // comments: {type: String}
 
     }
 );

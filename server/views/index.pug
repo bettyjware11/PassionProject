@@ -1,16 +1,5 @@
 extends layout
 
 block content
-  h1 Join the Exotic Styles Gallery!
-  h2 The following people are already members of Style Gallery
-
-  div.container
-    each entry in allEntries
-      div.gridSection
-        img(src=entry.profileImage)
-        h1 #{entry.username} (ID: #{entry.id})
-        h2 Exotic Styles
-        img(src=entry.exoticStyles.styleImage)
-        p styleName: #{entry.exoticStyles.styleName}, styleColor: #{entry.exoticStyles.styleColor}, uniqueColorChoice: #{entry.exoticStyles.uniqueColorMix}, comments: #{entry.exoticStyles.comments}
-    else
-      h1 No Users Are Registered
+    h1= title
+    p Welcome to #{title}

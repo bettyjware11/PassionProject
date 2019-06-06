@@ -43,12 +43,12 @@ passport.use('signup', new LocalStrategy(
     // req is the request of the route that called the strategy
     // username and password are passed by passport by default
     // done is the function to end the strategy (callback function).
-    function(req, id, username, password, profileImage, done) {
+    function(req, username, password, done) {
       console.log("0");
       // Created like this so it can be delayed to be run in the next "tick" loop. See function call below.
       findOrCreateUser = function(){
         // find a user in Mongo with provided username. It returns an error if there is an error or the full entry for that user
-        ExoticStyleUserCollection.findOne({'id':id},function(err, user) {
+        ExoticStyleUserCollection.findOne({'username':username},function(err, user) {
           // In case of any error in Mongoose/Mongo when finding the user
           if (err){
             console.log('Error in SignUp: '+err);
@@ -70,10 +70,10 @@ passport.use('signup', new LocalStrategy(
             // create the user
             var newUser = new ExoticStyleUserCollection();
             // set the user's local credentials
-            newUser.id = req.body.id;
             newUser.username = req.body.username;
             newUser.password = createHash(req.body.password);
-            newUser.profileImage = req.body.profileImage;
+            // newUser.profileImage = req.body.profileImage;
+            newUser.exoticStyleName = req.body.exoticStyleName;
 
 
             // save the user. Works like .create, but for an object of a schema
@@ -99,15 +99,6 @@ passport.use('signup', new LocalStrategy(
 );
 
 // Create new user with the signup strategy
-router.get('/addUser', function(req, res, next) {
-    // We're calling our schema variable so we can use .create function. You can use req.body if all of the information in your body of your fetch in React as the EXACT same names as your schema in your database. Otherwise you should use a collection here.
-    ExoticStyleUserCollection.create(req.body, (errors, results)=>{
-        // If there was some sort of error in finding something, run this error
-        if(errors) res.send(errors);
-        // If everything went alright, send the new collection through the results variable
-        else res.send("Added!!!!");
-    });
-});
 
 router.post('/',
     // Passport's authenticate function is called the signup strategy. Once it's complete it's either successful or failed
@@ -126,31 +117,6 @@ router.get('/failNewUser', (req, res)=>{
     res.send('NOPE!!! On the new user');
 });
 
-/* GET users listing. */
-router.get('/', (req, res, next) => {
-    console.log(req.session);
-    console.log(req.session.username);
-
-    if (req.session.username) {
-        res.send(req.session.username);
-    } else {
-        res.send(null);
-    }
-});
-
-router.get('/logout', (req, res, next) => {
-    console.log(req.session);
-    // console.log(req.session.username);
-
-    if (req.session) {
-        req.session=null;
-        res.send("Logged Out");
-    } else {
-        res.send("Not logged in");
-    }
-});
-
-
 //******************************************************************
 // ***************   Check if a user exists    *********************
 //******************************************************************
@@ -163,7 +129,7 @@ passport.use(new LocalStrategy(
     function(username, password, done) {
       console.log("Local Strat");
       // find a user in Mongo with provided username. It returns an error if there is an error or the full entry for that user
-      ExoticStyleUserCollection.findOne({ id: id }, function (err, user) {
+      ExoticStyleUserCollection.findOne({ username: username }, function (err, user) {
         // If there is a MongoDB/Mongoose error, send the error
         if (err) {console.log("1");
           return done(err); }
@@ -181,7 +147,7 @@ passport.use(new LocalStrategy(
         console.log(user);
         // null is here because there is not an error
         // user is the results of the findOne function
-        return done(null, user, { user: user.id });
+        return done(null, user, { user: user.username });
       });
     }
 ));
@@ -201,8 +167,9 @@ router.post('/login',
       req.session.username=req.user.username;
       // Send the username and email back to the client to save to the client's state
       res.send({
-        id: req.user.id,
-        username: req.user.username
+
+        username: req.user.username,
+        exoticStyleName: req.user.exoticStyleName
       });
     });
 
@@ -220,87 +187,6 @@ router.get('/logout', (req, res, next) => {
   req.session = null;
 });
 
-//CRUD
-//add exotic style
-router.post('/addStyle', (req, res) => {
-    ExoticStyleUserCollection.findOneAndUpdate({id: req.body.id},
-        {$push: {exoticStyles: req.body}}, (errors) => {
-            if (errors) res.send(errors);
-            else res.send("Exotic Style Added");
-        });
-});
-
-//edit style
-router.post('/editStyle/:id/:styleId', (req, res) => {
-    ExoticStyleUserCollection.updateOne({_id: req.params.id, "exoticStyless._id": req.params.exoticStyleId},
-        {
-            $set: {
-                "exoticStyles.$.styleName": req.body.styleName,
-                "exoticStyles.$.styleImage": req.body.styleImage,
-                "exoticStyles.$.uniqueColorMix": req.body.uniqueColorMix,
-                "exoticStyles.$.styleColor": req.body.styleColor,
-                "exoticStyles.$.comments": req.body.comments,
-
-            }
-        }, (errors) => {
-            if (errors) res.send(errors);
-            else {
-                res.send('Exotic Style updated')
-            }
-        });
-});
-
-//results = user object array. Map array for each user THEN map each user for styles
-router.get('/grabExoticStyles', (req, res) => {
-    ExoticStyleUserCollection.find({}, (errors, results) => {
-        if (errors) res.send(errors);
-        else {
-            res.send(results)
-        }
-    })
-});
-
-//search styles
-router.post('/searchExoticStyles', (req, res) => {
-    ExoticStyleUserCollection.find(
-        {"exoticStyles.styleName": {"$regex": req.body.searchBar, "$options": "i"}}, (errors, results) => {
-            if (errors) res.send(errors);
-            else {
-                let resultsArray = [];
-                let sendArray = [];
-                for (let i = 0; i < results.length; i++) {
-                    for (let j = 0; j < results[i].exoticStyles.length; j++) {
-
-                        resultsArray.push(
-                            {
-                                styleName:results[i].exoticStyles[j].styleName,
-                                styleImage:results[i].exoticStyles[j].styleImage,
-                                uniqueColorMix:results[i].exoticStyles[j].uniqueColorMix,
-                                styleColor:results[i].exoticStyles[j].styleColor,
-                                comments:results[i].exoticStyles[j].comments,
-                            }
-                        )
-                    }
-                }
-                for(let i=0; i<resultsArray.length; i++){
-                    if(resultsArray[i].styleName.includes(req.body.searchBar)){
-                        sendArray.push(resultsArray[i])
-                    }
-                }
-                res.send(sendArray);
-            }
-        })
-});
-
-//grab user
-router.post('/searchUsers', (req, res) => {
-    ExoticStyleUserCollection.findOne({username: req.body.username}, (errors, results) => {
-        if (errors) res.send(errors);
-        else {
-            res.send(results);
-        }
-    })
-});
 
 
 module.exports = router;

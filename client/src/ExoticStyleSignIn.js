@@ -23,6 +23,7 @@ class ExoticStyleSignIn extends Component{
                 body: JSON.stringify({
                     username: e.target.username.value,
                     password: e.target.password.value,
+                    // profileImage: e.target.profileImage.value
                 }),
             })
         // data on the left side is the raw response data the server sent (res.send)
@@ -30,11 +31,11 @@ class ExoticStyleSignIn extends Component{
             .then(rawData=>rawData.json())
             // response on the left side is the readable JSON collection.
             // on the right side we're running a function. The first line is console logging
-            .then(userAndEmail=>{console.log(userAndEmail);
+            .then(userAndExoticStyleName=>{console.log(userAndExoticStyleName);
                 // If the server (res.send) has a collection with a username in it, run the function below
-                if(userAndEmail.username)
+                if(userAndExoticStyleName.username)
                 // This is changing the parent component state to the returned username, returned email and isLoggedIn to true
-                    return this.props.loggedInUserInfo(userAndEmail.username, userAndEmail.email, true);
+                    return this.props.loggedInUserInfo(userAndExoticStyleName.username, userAndExoticStyleName.exoticStyleName, true);
                 // If the server (res.send) DOES NOT have username in it, run the function below
                 else
                 // This is changing the parent component state to have the username and password to be null (empty) and isLoggedIn to false
@@ -54,9 +55,9 @@ class ExoticStyleSignIn extends Component{
 
                     {/*<img type="file" src={"choice-jumbo-braid.jpg"}/>*/}
                     {/*<img type="file" src={"https://images.search.yahoo.com/images/view;_ylt=AwrExdkXdPZciG0AXNQ2nIlQ;_ylu=X3oDMTIzdGI3MDQ1BHNlYwNzcgRzbGsDaW1nBG9pZAMyYjhiNTAxNjBlNjFjNjE1ZDY0YjZjMDIyMThlZWU3ZARncG9zAzQwBGl0A2Jpbmc-?back=https%3A%2F%2Fimages.search.yahoo.com%2Fyhs%2Fsearch%3Fp%3Dhairstyles%2Bapi%2B2017%26fr%3Dyhs-pty-pty_speedtest%26hsimp%3Dyhs-pty_speedtest%26hspart%3Dpty%26tab%3Dorganic%26ri%3D40&w=1280&h=720&imgurl=i.ytimg.com%2Fvi%2F6qWzQlh4dGA%2Fmaxresdefault.jpg&rurl=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D6qWzQlh4dGA&size=153.4KB&name=Inspiring+Goddess+Braid+Hairstyles+2017+-+YouTube&p=hairstyles+api+2017&oid=2b8b50160e61c615d64b6c02218eee7d&fr2=&fr=yhs-pty-pty_speedtest&tt=Inspiring+Goddess+Braid+Hairstyles+2017+-+YouTube&b=0&ni=49&no=40&ts=&tab=organic&sigr=11bnavrgq&sigb=14e6dj9gu&sigi=11cbvs6ts&sigt=11h36mbpi&sign=11h36mbpi&.crumb=moR2Sxh2SP2&fr=yhs-pty-pty_speedtest&hsimp=yhs-pty_speedtest&hspart=pty"}/>*/}
-                    <img type="file" src={"https://i.ytimg.com/vi/6qWzQlh4dGA/maxresdefault.jpg"}/>
-                    <img type="file" src={"wpid-img_3222.jpg"}/>
-                    <img type="file" src={"8428e7186a24800c67eb08791a8cbe9e.jpg"}/>
+                    <img type="file" src={"https://i.ytimg.com/vi/6qWzQlh4dGA/maxresdefault.jpg"} alt=""/>
+                    <img type="file" src={"wpid-img_3222.jpg"} alt=""/>
+                    <img type="file" src={"8428e7186a24800c67eb08791a8cbe9e.jpg"} alt=""/>
 
 
 

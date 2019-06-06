@@ -27,7 +27,6 @@ class ExoticStyleUserRegistration extends Component {
             // Creates a collection for username, password, and email. Because a request can't send a collection, you have to make it a JSON string first
             // e.target is the information being sent from the form input fields by their names give in the input attributes. The value is what was typed.
             body: JSON.stringify({
-                id: e.target.id.value,
                 username: e.target.username.value,
                 password: e.target.password.value,
                 profileImage:e.target.profileImage.value,

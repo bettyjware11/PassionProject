@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ImageUploader from 'react-images-upload';
-import DetailedStyle from "./DetailedStyle";
+import DetailedExoticStyle from "./DetailedExoticStyle";
 import AddExoticStyle from "./AddExoticStyle";
 import logo from './logo.svg';
 
@@ -38,14 +38,15 @@ class StyleListing extends Component {
         //Call localhost[PORT]/phone like you would in POSTMAN. It's GET by default.
         fetch('/exoticStyle')
         // The response or res from your server is pushed into the variable here. It doesn't have to be named data. It can be anything. If it's a collection put data.json(). If it's a string put data.text()
-            .then(data => data.text())
-            // .then(res != res.text())
-            // .then(text != console.log(text))
+            .then(data => data.json())
+            // .then(res => res.text())
+            // .then(text => console.log(text))
 
             // Now that the data is a collection again we want to save it in the exoticStyleCollectionArray state so we can call it in a different function.
             .then(data => this.setState(
+
                 // Once the exoticStyleCollectionArray state is saved I want to run the mappedExoticStyleFunction. I have to call it this way so it doesn't run the function before the data is finished being fetched and saved.
-                {data: data.exoticStyle}, () => this.mappedExoticStyleFunction()));
+                {exoticStyleCollectionArray:data}, () => this.mappedExoticStyleFunction()));
     };
 
     // This function will map out our exoticStyleCollectionArray and save the style HTML array in the mappedExoticStyle state.
@@ -57,7 +58,7 @@ class StyleListing extends Component {
                 // You want to style each Element using JSX and give it a key
                 return (<div key={eachElement._id}>
                     {/*We want to do all the styling in a different component so we have to send the element as a prop to the component.*/}
-                    <DetailedStyle eachElement={eachElement} fetchEditDetails={this.fetchEditDetails}/>
+                    <DetailedExoticStyle eachElement={eachElement} fetchEditDetails={this.fetchEditDetails}/>
                 </div>)
             }
         );
