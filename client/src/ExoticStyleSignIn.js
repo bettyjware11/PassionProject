@@ -55,6 +55,7 @@ class ExoticStyleSignIn extends Component{
 
                     <h1>Your style entries are:{this.props.exoticStyleName}</h1>
                     {/*<img src={eachElement.styleImage} className="card-img" alt="Style Image"/>*/}
+                    <DetailedExoticStyle/>
 
 
 

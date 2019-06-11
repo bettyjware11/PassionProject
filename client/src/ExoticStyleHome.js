@@ -20,6 +20,7 @@ class ExoticStyleHome extends Component{
             exoticStyleName: null,
             isEditing: false,
             entryCollection: -1,
+
         };
     }
     changeEdit=(editBoolean, editID)=>{
