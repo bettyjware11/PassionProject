@@ -20,6 +20,7 @@ router.get('/', function(req, res, next) {
         if(errors) res.send(errors);
         // If everything went alright, send the results of the find function (all entries in the database)
         else res.render(results);
+        process.nextTick(find);
     });
 });
 
@@ -49,56 +50,44 @@ router.put('/', (req, res)=>{
         });
 });
 
+//results = user object array. Map array for each user THEN map each user for styles
+router.get('/grabExoticStyles', (req, res) => {
+    ExoticStyleUserCollection.findOne({username: req.session.username}, (errors, results)=>{
+        if(results){ return res.send(results); }
+        else {return res.send({message: "Didn't find a user!!!"})}
+    })
+});
 
 
-// router.post('/', upload.single('styleImage'),(req, res, next)=> {
-//     console.log(req.file);
-//     const exoticStyle = new ExoticStyle({
-//         _id: new mongoose.Types.ObjectId(),
-//         styleName: req.body.exoticStyle.styleName,
-//         uniqueColorMix: req.body.exoticStyle.uniqueColorMix,
-//         styleColor: req.body.exoticStyle.styleColor,
-//         comments: req.body.exoticStyle.comments
-//     })
-// });
-
-// router.post('/addStyle', (req, res) => {
-//     ExoticStyleUserCollection.findOneAndUpdate({id: req.body.id},
-//         {$push: {exoticStyle: req.body}}, (errors) => {
-//             if (errors) res.send(errors);
-//             else res.send("Exotic Style Added");
-//         });
-// });
+router.post('/addStyle', (req, res) => {
+    ExoticStyleUserCollection.findOneAndUpdate({username: req.body.username},
+        {$push: {exoticStyleDetails: req.body.exoticStyleDetails}}, (errors, results) => {
+            if (errors) res.send(errors);
+            else res.send("Exotic Style Added");
+        });
+});
 
 //edit style
-// router.post('/editStyle/:id/:styleId', (req, res) => {
-//     ExoticStyleUserCollection.updateOne({_id: req.params.id, "exoticStyle._id": req.params.exoticStyleId},
-//         {
-//             $set: {
-//                 "exoticStyle.$.styleName": req.body.styleName,
-//                 "exoticStyle.$.styleImage": req.body.styleImage,
-//                 "exoticStyle.$.uniqueColorMix": req.body.uniqueColorMix,
-//                 "exoticStyle.$.styleColor": req.body.styleColor,
-//                 "exoticStyle.$.comments": req.body.comments,
-//
-//             }
-//         }, (errors) => {
-//             if (errors) res.send(errors);
-//             else {
-//                 res.send('Exotic Style updated')
-//             }
-//         });
-// });
+router.post('/editStyle/:id/:styleId', (req, res) => {
+    ExoticStyleUserCollection.updateOne({_id: req.params.id, "exoticStyleDetails._id": req.params.exoticStyleId},
+        {
+            $set: {
+                // "exoticStyleDetails.$.styleName": req.body.styleName,
+                "exoticStyleDetails.$.styleImage": req.body.styleImage,
+                "exoticStyleDetails.$.uniqueColorMix": req.body.uniqueColorMix,
+                "exoticStyleDetails.$.styleColor": req.body.styleColor,
+                "exoticStyleDetails.$.comments": req.body.comments,
 
-//results = user object array. Map array for each user THEN map each user for styles
-// router.get('/grabExoticStyles', (req, res) => {
-//     ExoticStyleUserCollection.find({}, (errors, results) => {
-//         if (errors) res.send(errors);
-//         else {
-//             res.send(results)
-//         }
-//     })
-// });
+            }
+        }, (errors) => {
+            if (errors) res.send(errors);
+            else {
+                res.send('Exotic Style updated')
+            }
+        });
+});
+
+
 
 
 
@@ -144,7 +133,22 @@ router.put('/', (req, res)=>{
 //     })
 // });
 
+// ******************************************
+// ******   How to protect routes   *********
+// ******************************************
 
+/* GET Home Page */
+// router.get('/home', isAuthenticated, function(req, res){
+//     res.render('home', { user: req.user });
+// });
+
+// // As with any middleware it is quintessential to call next()
+// // if the user is authenticated
+// var isAuthenticated = function (req, res, next) {
+//     if (req.isAuthenticated())
+//         return next();
+//     res.redirect('/');
+// };
 
 
 

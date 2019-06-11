@@ -3,6 +3,8 @@ var router = express.Router();
 // exports.users = require('./users');
 var ExoticStyleUserCollection = require('../models/ExoticStyleUserSchema');
 
+// import React, {PropTypes} from 'module';
+
 // Used to hash passwords
 var bCrypt = require('bcrypt-nodejs');
 
@@ -46,7 +48,8 @@ passport.use('signup', new LocalStrategy(
     function(req, username, password, done) {
       console.log("0");
       // Created like this so it can be delayed to be run in the next "tick" loop. See function call below.
-      findOrCreateUser = function(){
+        var findOrCreateUser;
+        findOrCreateUser = function(){
         // find a user in Mongo with provided username. It returns an error if there is an error or the full entry for that user
         ExoticStyleUserCollection.findOne({'username':username},function(err, user) {
           // In case of any error in Mongoose/Mongo when finding the user
@@ -186,6 +189,7 @@ router.get('/logout', (req, res, next) => {
   // Clearing the session (cookie) to get rid of the saved username
   req.session = null;
 });
+
 
 
 

@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import Gallery from "./Gallery";
+// import Gallery from "./Gallery";
+import { Route, Redirect } from 'react-router'
+import StyleListing from "./StyleListing";
+import DetailedExoticStyle from "./DetailedExoticStyle";
 
 
 class ExoticStyleSignIn extends Component{
@@ -23,7 +26,7 @@ class ExoticStyleSignIn extends Component{
                 body: JSON.stringify({
                     username: e.target.username.value,
                     password: e.target.password.value,
-                    // profileImage: e.target.profileImage.value
+
                 }),
             })
         // data on the left side is the raw response data the server sent (res.send)
@@ -48,16 +51,10 @@ class ExoticStyleSignIn extends Component{
         if(this.props.isLoggedIn) {
             return (
                 <div>
-                    {/*It's getting props.email from the parent component. It was populated by the loggedInUserInfo function.*/}
-                    {/*<h1>Your email is: {this.props.email}</h1>*/}
-                    <h1>Style Gallery</h1>
-                    {/*<img src={"client/src/IMG_0382.JPG"}/>*/}
+                    {/*It's getting props.exoticStyleName from the parent component. It was populated by the loggedInUserInfo function.*/}
 
-                    {/*<img type="file" src={"choice-jumbo-braid.jpg"}/>*/}
-                    {/*<img type="file" src={"https://images.search.yahoo.com/images/view;_ylt=AwrExdkXdPZciG0AXNQ2nIlQ;_ylu=X3oDMTIzdGI3MDQ1BHNlYwNzcgRzbGsDaW1nBG9pZAMyYjhiNTAxNjBlNjFjNjE1ZDY0YjZjMDIyMThlZWU3ZARncG9zAzQwBGl0A2Jpbmc-?back=https%3A%2F%2Fimages.search.yahoo.com%2Fyhs%2Fsearch%3Fp%3Dhairstyles%2Bapi%2B2017%26fr%3Dyhs-pty-pty_speedtest%26hsimp%3Dyhs-pty_speedtest%26hspart%3Dpty%26tab%3Dorganic%26ri%3D40&w=1280&h=720&imgurl=i.ytimg.com%2Fvi%2F6qWzQlh4dGA%2Fmaxresdefault.jpg&rurl=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D6qWzQlh4dGA&size=153.4KB&name=Inspiring+Goddess+Braid+Hairstyles+2017+-+YouTube&p=hairstyles+api+2017&oid=2b8b50160e61c615d64b6c02218eee7d&fr2=&fr=yhs-pty-pty_speedtest&tt=Inspiring+Goddess+Braid+Hairstyles+2017+-+YouTube&b=0&ni=49&no=40&ts=&tab=organic&sigr=11bnavrgq&sigb=14e6dj9gu&sigi=11cbvs6ts&sigt=11h36mbpi&sign=11h36mbpi&.crumb=moR2Sxh2SP2&fr=yhs-pty-pty_speedtest&hsimp=yhs-pty_speedtest&hspart=pty"}/>*/}
-                    <img type="file" src={"https://i.ytimg.com/vi/6qWzQlh4dGA/maxresdefault.jpg"} alt=""/>
-                    <img type="file" src={"wpid-img_3222.jpg"} alt=""/>
-                    <img type="file" src={"8428e7186a24800c67eb08791a8cbe9e.jpg"} alt=""/>
+                    <h1>Your style entries are:{this.props.exoticStyleName}</h1>
+                    {/*<img src={eachElement.styleImage} className="card-img" alt="Style Image"/>*/}
 
 
 
@@ -80,6 +77,7 @@ class ExoticStyleSignIn extends Component{
                         </p>
                         <button>Sign In</button>
                     </form>
+
                 </div>
             );
         }

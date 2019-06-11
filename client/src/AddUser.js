@@ -29,7 +29,7 @@ class AddUser extends Component {
             body: JSON.stringify({
                 username: e.target.username.value,
                 password: e.target.password.value,
-                // profileImage: e.target.profileImage.value,
+                exoticStyleName: e.target.exoticStyleName.value,
             }),
         })
         // data on the left side is the raw response data the server sent (res.send)
@@ -56,10 +56,10 @@ class AddUser extends Component {
                         <label htmlFor={"password"}>Enter password:</label>
                         <input id={"password"} type="password" name='password' placeholder="Enter password"/>
                     </p>
-                    {/*<p>*/}
-                    {/*    <label htmlFor={"profileImage"}>Upload profile URL:</label>*/}
-                    {/*    <input id={"profileImage"} type="text" name='profileImage' placeholder="Enter profile URL"/>*/}
-                    {/*</p>*/}
+                    <p>
+                        <label htmlFor={"exoticStyleName"}>Enter Style Name:</label>
+                        <input id={"exoticStyleName"} type="text" name='exoticStyleName' placeholder="Enter Style Name"/>
+                    </p>
                     <button>Sign In</button>
                 </form>
                 {/*The display message received from the server in fetch*/}

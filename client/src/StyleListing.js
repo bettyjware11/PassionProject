@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import ImageUploader from 'react-images-upload';
+// import ImageUploader from 'react-images-upload';
 import DetailedExoticStyle from "./DetailedExoticStyle";
-import AddExoticStyle from "./AddExoticStyle";
-import logo from './logo.svg';
+// import AddExoticStyle from "./AddExoticStyle";
+// import logo from './logo.svg';
 
 
 class StyleListing extends Component {
@@ -70,10 +70,7 @@ class StyleListing extends Component {
         return (<div>
             <h1>Exotic Styles</h1>
 
-            <img type="file" src={"https://i.ytimg.com/vi/6qWzQlh4dGA/maxresdefault.jpg"}/>
-
-
-
+            {/*<img type="file" src={"https://i.ytimg.com/vi/6qWzQlh4dGA/maxresdefault.jpg"} alt=""/>*/}
 
 
             {/*Print out MappedExoticStyle state with the stylized element array*/}

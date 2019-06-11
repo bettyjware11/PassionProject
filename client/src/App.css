@@ -1,34 +1,54 @@
-* {
-  /*color: deeppink;*/
-  background-color: #00B7FF;
-  /*background-image: url("/client/66831765-beautiful-hair-beauty-brunette-woman-with-long-straight-red-hair.jpg");*/
-  box-sizing: border-box;
-  font-family: "Roboto", sans-serif;
+body{
+  margin: 5% 10%;
+  background-color: pink;
 }
 
-.App__Aside{
-  box-sizing: border-box;
+.App {
+  text-align: center;
 }
 
-body {
-  margin: 0;
-  padding: 0;
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+  pointer-events: none;
 }
 
-.mr-20 {
-  margin-right: 20px;
-}
-
-.FormField__Checkbox {
-  position: relative;
-  top: 1.5px;
-}
-
-.FormField__TermsLink {
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
   color: white;
-  border-bottom: 1px solid blue;
-  text-decoration: none;
-  display: inline-block;
-  padding-bottom: 2px;
-  margin-left: 5px;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.linkSpacing{
+  margin-left: 3%;
+}
+
+.buttonLink{
+  border: none;
+  background: none;
+  text-decoration: underline;
+  color: blue;
+  font-size: 1em;
+}
+
+.successMessage{
+  margin-top: 2%;
 }

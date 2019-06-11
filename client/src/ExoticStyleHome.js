@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Link, Route} from "react-router-dom";
-import ExoticStyleUserRegistration from "./ExoticStyleUserRegistration";
+// import ExoticStyleUserRegistration from "./ExoticStyleUserRegistration";
 import LogOut from "./LogOut";
 import ExoticStyleSignIn from "./ExoticStyleSignIn";
 import StyleListing from "./StyleListing";
 import AddExoticStyle from "./AddExoticStyle";
 import AddUser from "./AddUser";
-import DetailedExoticStyle from "./DetailedExoticStyle";
+import EditExoticStyle from "./EditExoticStyle";
+// import DetailedExoticStyle from "./DetailedExoticStyle";
 
 class ExoticStyleHome extends Component{
     // constructor to save state (component variables) like isLoggedIn, username, and email
@@ -16,17 +17,23 @@ class ExoticStyleHome extends Component{
             // isLoggedIn is false because a user is not logged in and there is no username or email so they're null
             isLoggedIn: false,
             username: null,
-            // profileImage: null,
+            exoticStyleName: null,
+            isEditing: false,
+            entryCollection: -1,
         };
     }
+    changeEdit=(editBoolean, editID)=>{
+        this.setState({isEditing: editBoolean,
+            entryCollection: editID});
+    };
 
     // Changes the state (components variables). It's usually called in child components to change the state in this parent component
     // The parameters in here will be replaced with a username, email, or true/false if a person is going to be logged in
-    loggedInUserInfo =(username, exoticStyle, loggedIn)=>{
+    loggedInUserInfo =(username, exoticStyleName, loggedIn)=>{
         console.log("Clear");
         this.setState({
             username: username,
-            // profileImage: profileImage,
+            exoticStyleName: exoticStyleName,
             isLoggedIn: loggedIn,
         });
     };
@@ -36,7 +43,7 @@ class ExoticStyleHome extends Component{
         this.setState({
             isLoggedIn: false,
             username: null,
-            // profileImage: null,
+            exoticStyleName: null,
         });
         // This is telling the server to clear the cookie (session) data
         fetch('/users/logout')
@@ -55,18 +62,25 @@ class ExoticStyleHome extends Component{
                     {/*Link provides a link to specified routes*/}
                     <Link to={"/"}>Home</Link>
                     <Link to={"/addUser"}>Register</Link>
-                    <Link to={"/viewGallery"}>Picture Gallery</Link>
+                    <Link to={"/stylelisting"}>Picture Gallery</Link>
+                    <Link className={'linkSpacing'} to='/viewGallery'>Style Listing</Link>
                     <Link to={"/addExoticStyle"}>Add Exotic Style</Link>
                     {/*This link has a onClick button to run the logOut function when clicked*/}
                     <Link to={"/logout"} onClick={this.logOut}>Log Out</Link>
                     {/*Connects the link to the specified component to render*/}
                     {/*In order to pass in variables or functions in the Route you to use component={()=><YourComponentHere/>}. If you don't have to pass anything you can use component={YourComponentHere} */}
                     <Route exact path={"/"} component={()=><ExoticStyleSignIn isLoggedIn={this.state.isLoggedIn} username={this.state.username} email={this.state.exoticStyle} loggedInUserInfo={this.loggedInUserInfo}/>} />
-                    <Route path={"/viewGallery"} component={()=><StyleListing/>} />
+                    <Route path={"/stylelisting"} component={()=><StyleListing/>} />
                     <Route path={"/addUser"} component={()=><AddUser/>} />
-                    <Route path={"/addExoticStyle"} component={()=><AddExoticStyle/>} />
+
+                    {this.state.isEditing?
+                        (<Route path={'/editStyle/:id/:styleId'} component={()=>{return <EditExoticStyle entryCollection={this.state.entryCollection} changeEdit={this.changeEdit}/>}}/>):
+                        (<Route path={'/stylelisting'} component={()=>{return <StyleListing  changeEdit={this.changeEdit}/>}}/>)}
+
+                        <Route path={"/addExoticStyle"} component={()=><AddExoticStyle/>} />
                     <Route path={"/logout"} component={()=><LogOut/>} />
                 </Router>
+
             </div>
         );
     }

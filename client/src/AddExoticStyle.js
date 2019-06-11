@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import StyleListing from "./StyleListing";
+import { Route, Redirect } from 'react-router'
+
 
 class AddExoticStyle extends Component{
     constructor(props) {
@@ -35,6 +38,7 @@ class AddExoticStyle extends Component{
 
     // The render function will run when you need to update something on the page
     render(){
+
         // Everything in the return is the JSX that will show up on the page
         return(
             <div>
@@ -69,7 +73,11 @@ class AddExoticStyle extends Component{
                 </form>
                 {/*This is going to show a successMessage pulled from the database. It was set in the fetch function above*/}
                 <div className={"successMessage"}>{this.state.successMessage}</div>
+
+
+
             </div>
+
         );
     }
 }

@@ -47,13 +47,13 @@ class EditExoticStyle extends Component{
         // Everything in the return is the JSX that will show up on the page
         return(
             <div>
-                <h1>StyleListing</h1>
+                <h1>Style Listing</h1>
                 {/*This form will run the submitAdditionalExoticStyle function when you hit a button in the form*/}
                 <form onSubmit={this.submitAdditionalExoticStyle}>
                     {/*The label and input in the p tag keeps them separated from the rest of the label/inputs because a p tag has a block display by default*/}
                     <p>
                         <label htmlFor="exoticStyleName">Enter the style name:</label>
-                        <input type="text" id={"movieName"} name={"movieName"} defaultValue={this.props.entryCollection.movieName}/>
+                        <input type="text" id={"exoticStyleName"} name={"exoticStyleName"} defaultValue={this.props.entryCollection.exoticStyleName}/>
                     </p>
 
                     <p>
