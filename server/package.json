@@ -16,7 +16,7 @@
     "multer": "^1.4.1",
     "nodemon": "^1.19.1",
     "process-nextick-args": "^2.0.0",
-    "pug": "^2.0.3",
+    "pug": "^3.0.1",
     "react-images-upload": "^1.2.6",
     "save": "^2.4.0",
     "util-deprecate": "^1.0.2"
